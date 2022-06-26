@@ -1,4 +1,4 @@
-FROM php:8.0-apache
+FROM php:8.1-apache
 
 ENV LARAVEL_PROCS_NUMBER=2
 ENV APACHE_SERVER_NAME=localhost
