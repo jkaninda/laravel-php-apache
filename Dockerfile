@@ -1,4 +1,4 @@
-FROM php:7.4-apache
+FROM php:8.0-apache
 
 ENV LARAVEL_PROCS_NUMBER=2
 ENV APACHE_SERVER_NAME=localhost
@@ -37,20 +37,6 @@ RUN docker-php-ext-install  zip mbstring exif pcntl bcmath -j$(nproc) gd intl
 
 # Install Redis and enable it
 RUN pecl install redis  && docker-php-ext-enable redis
-
-# Clone rdKafka and install it
-RUN git clone https://github.com/arnaud-lb/php-rdkafka.git\
-    && cd php-rdkafka \
-    && phpize \
-    && ./configure \
-    && make all -j 5 \
-    && make install 
-
-# Enable rdKafka
-RUN docker-php-ext-enable rdkafka \
-     && cd .. \
-    && rm -rf /php-rdkafka
-
 
 # Install the php memcached extension
 RUN pecl install memcached && docker-php-ext-enable memcached

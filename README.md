@@ -17,7 +17,6 @@
 * XML PHP Extension
 * PDO PHP Extension(pdo_mysql,pdo_pgsql)
 * Redis PHP Extension
-* Rdkafka PHP Extension
 * Mbstring PHP Extension
 * PCNTL PHP Extension
 * ZIP PHP Extension
