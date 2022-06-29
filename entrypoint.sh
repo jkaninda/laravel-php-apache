@@ -22,7 +22,6 @@ command=apache2-foreground
 numprocs=1
 autostart=true
 autorestart=true
-stderr_logfile=/var/log/apache2.log
 stdout_logfile=/var/log/apache2.out.log
 user=root
 priority=100
