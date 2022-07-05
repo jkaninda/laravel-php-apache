@@ -10,7 +10,7 @@ echo "***********************************************************"
 set -e
 
 ## Create APACHE worker process
-TASK=/etc/supervisor/conf.d/worker.conf
+TASK=/etc/supervisor/conf.d/apache2.conf
 touch $TASK
 cat > "$TASK" <<EOF
 [supervisord]
@@ -74,6 +74,15 @@ echo "Checking if storage directory exists"
         echo "${Red} Directory $STORAGE_DIR does not exist"
     fi
 
+   ## Check if the supervisor config file exists
+  if [ -f /var/www/html/conf/worker/supervisor.conf ]; then
+    echo "Custom supervisor config found"
+    cp /var/www/html/conf/worker/supervisor.conf /etc/supervisor/conf.d/supervisor.conf
+    else
+    echo "${Red} Supervisor.conf not found"
+    echo "${Green} If you want to add more supervisor configs, create config file in /var/www/html/conf/worker/supervisor.conf"
+    echo "${Green} Start supervisor with default config..."
+    fi
 echo ""
 echo "**********************************"
 echo "     Starting Supervisord...     "
