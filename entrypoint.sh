@@ -71,10 +71,6 @@ echo "Checking if storage directory exists"
 
     else
         echo "${Red} Directory $STORAGE_DIR does not exist"
-        echo "Fixing permissions from $WORKDIR"
-        chown -R www-data:www-data $WORKDIR/storage
-        chmod -R 775 $WORKDIR/storage
-        echo  "${Green}Permissions fixed"
     fi
 
 echo ""
