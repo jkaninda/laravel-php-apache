@@ -1,10 +1,10 @@
 FROM php:7.2-apache
 
-ENV LARAVEL_PROCS_NUMBER=2
+ENV LARAVEL_PROCS_NUMBER=1
 ENV APACHE_SERVER_NAME=localhost
 ENV WORKDIR=/var/www/html
 ENV STORAGE_DIR=${WORKDIR}/storage
-ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+ENV APACHE_DOCUMENT_ROOT=${WORKDIR}/public
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
