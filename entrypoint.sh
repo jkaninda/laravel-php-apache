@@ -13,10 +13,6 @@ set -e
 TASK=/etc/supervisor/conf.d/apache2.conf
 touch $TASK
 cat > "$TASK" <<EOF
-[supervisord]
-nodaemon=true
-user=root
-
 [program:apache2]
 command=apache2-foreground
 numprocs=1
@@ -35,9 +31,6 @@ if [ -f $WORKDIR/artisan ]; then
     TASK=/etc/supervisor/conf.d/laravel-worker.conf
     touch $TASK
     cat > "$TASK" <<EOF
-    [supervisord]
-    nodaemon=true
-    user=root
     [program:Laravel-scheduler]
     process_name=%(program_name)s_%(process_num)02d
     command=/bin/sh -c "while [ true ]; do (php $WORKDIR/artisan schedule:run --verbose --no-interaction &); sleep 60; done"
