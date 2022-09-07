@@ -33,9 +33,9 @@
 ```yml
 version: '3'
 services:
-    php-apache:
+    app:
         image: jkaninda/laravel-php-apache:latest
-        container_name: php-apache
+        container_name: app
         restart: unless-stopped   
         ports:
          - "80:80"   
@@ -43,12 +43,9 @@ services:
         #Project root
             - ./:/var/www/html
             #- ~/.ssh:/root/.ssh # If you use private CVS
-            #- ./supervisord:/etc/supervisor/conf.d/ # Supervisor directory, if you want to add more supervisor process config file
-            #- ./php.ini:/usr/local/etc/php/conf.d/php.ini # Optional, your custom php init file
         environment:
            - APP_ENV=development # Optional, or production
-           - WORKDIR=/var/www/html #Optional, If you want to use  a custom directory
-           - LARAVEL_PROCS_NUMBER=3 # Optional, Laravel queue:work process number    
+           #- LARAVEL_PROCS_NUMBER=1 # Optional, Laravel queue:work process number    
         networks:
             - default #if you're using networks between containers
 
@@ -56,7 +53,7 @@ services:
 ## Laravel `artisan` command usage:
 ### Open php-fpm
 ```sh
-docker-compose exec php-apache /bin/bash
+docker-compose exec app /bin/bash
 
 ```
 
@@ -75,6 +72,13 @@ php atisan  migrate
 ### Add more supervisor process in
 > /var/www/html/conf/worker/supervisor.conf
 
+### Custom php.ini
+> /var/www/html/conf/php/php.ini
+
+## Storage permision issue
+> docker-compose exec app /bin/bash 
+> chown -R www-data:www-data /var/www/html/storage
+> chmod -R 775 /var/www/html/storage
 
 > P.S. please give a star if you like it :wink:
 

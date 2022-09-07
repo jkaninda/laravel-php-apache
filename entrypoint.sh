@@ -8,21 +8,6 @@ echo " Starting LARAVEL PHP-APACHE Docker Container                 "
 echo "***********************************************************"
 
 set -e
-
-## Create APACHE worker process
-TASK=/etc/supervisor/conf.d/apache2.conf
-touch $TASK
-cat > "$TASK" <<EOF
-[program:apache2]
-command=apache2-foreground
-numprocs=1
-autostart=true
-autorestart=true
-stdout_logfile=/var/log/apache2.out.log
-user=root
-priority=100
-EOF
-
 ## Check if the artisan file exists
 if [ -f $WORKDIR/artisan ]; then
     echo "${Green} artisan file found, creating laravel supervisor config"
@@ -54,19 +39,7 @@ echo  "${Green} Laravel supervisor config created"
 else
     echo  "${Red} artisan file not found"
 fi
-#check if storage directory exists
-echo "Checking if storage directory exists"
-    if [ -d "$STORAGE_DIR" ]; then
-        echo "Directory $STORAGE_DIR  exist. Fixing permissions..."
-        chown -R www-data:www-data $STORAGE_DIR
-        chmod -R 775 $STORAGE_DIR
-        echo  "${Green}Permissions fixed"
-
-    else
-        echo "${Red} Directory $STORAGE_DIR does not exist"
-    fi
-
-   ## Check if the supervisor config file exists
+## Check if the supervisor config file exists
   if [ -f /var/www/html/conf/worker/supervisor.conf ]; then
     echo "Custom supervisor config found"
     cp /var/www/html/conf/worker/supervisor.conf /etc/supervisor/conf.d/supervisor.conf
@@ -75,6 +48,14 @@ echo "Checking if storage directory exists"
     echo "${Green} If you want to add more supervisor configs, create config file in /var/www/html/conf/worker/supervisor.conf"
     echo "${Green} Start supervisor with default config..."
     fi
+    ## Check if php.ini file exists
+if [ -f /var/www/html/conf/php/php.ini ]; then
+    cp /var/www/html/conf/php/php.ini $PHP_INI_DIR/conf.d/
+    echo "Custom php.ini file found and copied in  $PHP_INI_DIR/conf.d/"
+else
+    echo "Custom php.ini file not found"
+    echo "If you want to add a custom php.ini file, you add it in /var/www/html/conf/php/php.ini"
+fi
 echo ""
 echo "**********************************"
 echo "     Starting Supervisord...     "

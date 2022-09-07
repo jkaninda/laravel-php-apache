@@ -1,4 +1,4 @@
-FROM php:8.1-apache
+FROM php:8.1.7-apache
 
 ENV LARAVEL_PROCS_NUMBER=1
 ENV APACHE_SERVER_NAME=localhost
@@ -50,16 +50,22 @@ RUN docker-php-ext-install pdo_pgsql
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-# Copy php.ini file
-COPY php.ini   $PHP_INI_DIR/conf.d/
 
 # 2. Apache configs + document root.
 RUN echo "ServerName ${APACHE_SERVER_NAME}" >> /etc/apache2/apache2.conf
 
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
 # Set working directory
 WORKDIR $WORKDIR
+
+RUN rm -Rf /var/www/* && \
+mkdir -p /var/www/html
+
+ADD src/index.php $WORKDIR/index.php
+ADD src/php.ini $PHP_INI_DIR/conf.d/
+ADD src/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 
 COPY ./entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
@@ -71,7 +77,7 @@ RUN usermod -u 1000 www-data
 RUN groupmod -g 1000 www-data
 
 RUN chmod 755 $WORKDIR
-
+EXPOSE 80
 # entrypoint
 CMD [ "entrypoint" ]
 

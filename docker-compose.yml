@@ -1,0 +1,13 @@
+version: '3'
+services:
+    app:
+        image: jkaninda/laravel-php-apache:latest 
+        container_name: app
+        restart: unless-stopped     
+        volumes:
+        #Project root
+            - ./laravel:/var/www/html
+        ports:
+          - 81:80
+        networks:
+            - default #if you're using networks between containers
