@@ -28,13 +28,12 @@ jobs:
         run: |
           set -x
           if [[ $GITHUB_REF == 'refs/heads/main' ]]; then
-            echo "BRANCH_NAME=latest" >> "$GITHUB_ENV"
+            echo "TAG_NAME=latest" >> "$GITHUB_ENV"
             echo "runs-on: main branch"
           else
-            echo "BRANCH_NAME=${{ github.head_ref || github.ref_name }}" >> "$GITHUB_ENV"
-            echo "runs-on: $GITHUB_REF branch"
+            echo "TAG_NAME=${{ github.head_ref || github.ref_name }}" >> "$GITHUB_ENV"
+            echo "runs-on: ${{ github.head_ref || github.ref_name }} branch"
           fi
-
       - 
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -52,4 +51,4 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: "${{env.BUILDKIT_IMAGE}}:${{env.BRANCH_NAME}}"
+          tags: "${{env.BUILDKIT_IMAGE}}:${{env.TAG_NAME}}"
