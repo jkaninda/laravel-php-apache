@@ -1,3 +1,4 @@
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/jkaninda/laravel-php-apache/build-verify-package?logo=github&style=flat-square)](https://github.com/jkaninda/laravel-php-apache/actions)
 ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/jkaninda/laravel-php-apache?style=flat-square)
 ![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/jkaninda/laravel-php-apache?style=flat-square)
 ![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/jkaninda/laravel-php-apache?style=flat-square)
@@ -75,9 +76,11 @@ php atisan  migrate
 ### Custom php.ini
 > /var/www/html/conf/php/php.ini
 
-## Storage permision issue
+### Storage permision issue
 > docker-compose exec app /bin/bash 
+
 > chown -R www-data:www-data /var/www/html/storage
+
 > chmod -R 775 /var/www/html/storage
 
 > P.S. please give a star if you like it :wink:
