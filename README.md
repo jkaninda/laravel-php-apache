@@ -76,7 +76,7 @@ php atisan  migrate
 ### Custom php.ini
 > /var/www/html/conf/php/php.ini
 
-## Storage permision issue
+### Storage permision issue
 > docker-compose exec app /bin/bash 
 > chown -R www-data:www-data /var/www/html/storage
 > chmod -R 775 /var/www/html/storage
