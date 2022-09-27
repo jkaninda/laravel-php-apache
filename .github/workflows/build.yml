@@ -17,13 +17,24 @@ on:
       - '7.2'
 
 env:
-  BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
+  #BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
   BUILDKIT_IMAGE: jkaninda/laravel-php-apache
 jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
-      
+      - 
+        name: Set environment for branch
+        run: |
+          set -x
+          if [[ $GITHUB_REF == 'refs/heads/main' ]]; then
+            echo "BRANCH_NAME=latest" >> "$GITHUB_ENV"
+            echo "runs-on: main branch"
+          else
+            echo "BRANCH_NAME=${{ github.head_ref || github.ref_name }}" >> "$GITHUB_ENV"
+            echo "runs-on: ${{env.GITHUB_REF}} branch"
+          fi
+
       - 
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
